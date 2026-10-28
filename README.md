@@ -74,6 +74,49 @@ results/                              (results_smoke/ for --smoke-test)
 
 Each row in `fixed_*.jsonl` and `adaptive_*.jsonl` has the retrieved document ids, the answer, `prompt_tokens`, `output_tokens`, `retrieval_latency_ms`, `router_latency_ms`, `prompt_build_ms`, `ttft_ms`, `decode_latency_ms`, `ms_per_token`, `generation_latency_ms`, `total_latency_ms`, `recall_at_k`, `mrr_at_k`, all quality sub-metrics and `composite_quality`.
 
+# Live Demo
+
+An interactive demo of the project **"Quality–Latency Trade-offs in Retrieval-Augmented Question Answering over Technical Documentation"**. It runs on an ordinary Windows or Mac laptop (8–16 GB RAM, no graphics card needed).
+
+You can ask a question, watch the system retrieve passages, route the question to a cheap or expensive configuration, generate an answer, and see latency and quality numbers for that exact run. Next to it sit the stored results of the full study on the complete test split (314 TechQA + 184 DelucionQA questions).
+
+## Start in three commands
+
+```bash
+pip install -r requirements.txt
+python download_laptop_models.py
+streamlit run app.py
+```
+
+Use a virtual environment if you like:
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+source .venv/bin/activate       # Mac / Linux
+```
+
+
+
+### A 6-minute demo script
+
+1. **Tab ①, Fixed Configuration.** Pick a TechQA question, k = 3, Small. Run. Point at the answer, the retrieved passages (✅ marks passages annotated as relevant), the five latency cards and the five quality cards.
+2. **Tab ①, Adaptive.** Same question. Show the router card: top-1 score, margin, complexity, difficulty, the tier it picked, and the overhead (a fraction of a millisecond).
+3. **Tab ①, Side-by-Side Live Compare.** Show the milliseconds saved and the quality change. Say this is one question, an anecdote.
+4. **Tab ②.** Run the 5-question mini-benchmark while you explain the design. Show the summary table and the speed-up chart.
+5. **Tab ③.** Switch dataset in the sidebar. Walk through the H1 card (k matters, generator size does not consistently help) and the H2 card (latency down, quality non-inferior). Mention the honest note about simple fixed configurations.
+6. **Tab ④.** Drag the budget slider and read out the recommendation.
+
+## The metrics in one place
+
+* **Total latency** = retrieval + router + prompt building + **TTFT** (time to first token, the prompt-reading step) + **decode** (writing the rest of the answer). Model loading and warm-up are never counted.
+* **Composite quality** = 0.35 × evidence token F1 + 0.25 × ROUGE-L + 0.25 × semantic similarity + 0.15 × context faithfulness. For your own custom questions there is no reference answer, so only context faithfulness is computed.
+* **Recall@k / MRR@k** measure whether the annotated relevant passages were retrieved, and how high.
+* **Non-inferiority (δ = 0.02)**: the adaptive pipeline counts as not worse if its average quality loss is below 0.02 with statistical confidence.
+
+
+
+
 
 
 
