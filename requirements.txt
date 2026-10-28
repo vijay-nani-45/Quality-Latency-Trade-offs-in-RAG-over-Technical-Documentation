@@ -1,0 +1,22 @@
+# ---- laptop demo (streamlit run app.py) + full benchmark ----
+# Windows / macOS: `pip install -r requirements.txt` installs a CPU/MPS-capable torch by default.
+# Linux: install the small CPU build first to avoid a multi-GB CUDA download:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.1
+transformers>=4.44,<5
+accelerate>=0.30
+datasets>=2.19
+sentence-transformers>=2.7
+huggingface_hub>=0.34,<1.0
+faiss-cpu>=1.7.4
+rank_bm25>=0.2.2
+rouge-score>=0.1.2
+numpy>=1.24
+scipy>=1.10
+pandas>=2.0
+matplotlib>=3.7
+seaborn>=0.12
+tqdm>=4.65
+psutil>=5.9
+streamlit>=1.35,<2
+plotly>=5.18
